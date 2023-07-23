@@ -1,0 +1,9 @@
+package {{completePackageName}}
+
+import {{packageName}}.{{featureName}}.datastore.I{{feature}}DataStore
+import javax.inject.Inject
+
+class {{feature}}RemoteClient @Inject constructor(private val client: Client):
+    I{{feature}}DataStore {
+
+}

@@ -1,0 +1,45 @@
+package {{completePackageName}}
+
+import {{packageName}}.{{featureName}}.datastore.local.I{{feature}}Store
+import {{packageName}}.{{featureName}}.datastore.local.dao.{{feature}}Dao
+import {{packageName}}.{{featureName}}.datastore.local.database.{{feature}}Database
+import {{packageName}}.{{featureName}}.datastore.local.entity.{{feature}}Entity
+import javax.inject.Inject
+
+class {{className}} @Inject constructor(private val context: Application):
+    I{{feature}}Store {
+
+    private var {{featureName}}Dao: {{feature}}Dao
+
+    init {
+        val database = {{feature}}Database.getInstance(context)
+        {{featureName}}Dao = database.{{featureName}}Dao()
+    }
+
+    override suspend fun save{{feature}}({{featureName}}: {{feature}}): Boolean {
+        return try {
+            {{featureName}}Dao.addEntity({{feature}}Entity({{featureName}}))
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    override suspend fun save{{feature}}s({{featureName}}s: List<{{feature}}>): Boolean {
+        val {{featureName}}sEntities = arrayListOf<{{feature}}Entity>>()
+        for ({{featureName}} in {{featureName}}s) {
+            {{featureName}}sEntities.add({{feature}}Entity({{featureName}}))
+        }
+        return try {
+            {{featureName}}Dao.addEntities({{featureName}}sEntities)
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    override suspend fun clear() {
+        {{featureName}}Dao.clear()
+    }
+}

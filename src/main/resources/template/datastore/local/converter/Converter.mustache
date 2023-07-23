@@ -1,0 +1,22 @@
+package {{completePackageName}}
+
+import androidx.room.TypeConverter
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+
+class Converters {
+
+    private val gson by lazy {
+        Gson()
+    }
+
+    @TypeConverter
+    fun fromListOfStringToString(list: List<String>): String {
+        return list.joinToString(separator = "|")
+    }
+
+    @TypeConverter
+    fun fromStringToListOfString(str: String): List<String> {
+        return str.split("|")
+    }
+}

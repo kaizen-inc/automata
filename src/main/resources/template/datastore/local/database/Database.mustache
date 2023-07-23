@@ -1,0 +1,35 @@
+package {{completePackageName}}
+
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import {{packageName}}.{{featureName}}.datastore.local.converter.Converters
+import {{packageName}}.{{featureName}}.datastore.local.dao.{{feature}}Dao
+import {{packageName}}.{{featureName}}.datastore.local.entity.{{feature}}Entity
+
+@Database(entities = [{{feature}}Entity::class],
+    version = 5, exportSchema = false)
+@TypeConverters(Converters::class)
+abstract class {{feature}}Database: RoomDatabase() {
+
+    abstract fun {{featureName}}Dao(): {{feature}}Dao
+
+    companion object {
+        private var instance: {{feature}}Database? = null
+
+        @JvmStatic @Synchronized
+        fun getInstance(applicationContext: Context): {{feature}}Database {
+            if (instance == null) {
+                instance = Room.databaseBuilder(applicationContext,
+                    {{feature}}Database::class.java,
+                    "{{databaseFileName}}.db")
+                    .fallbackToDestructiveMigration()
+                    .build()
+            }
+
+            return instance!!
+        }
+    }
+}
