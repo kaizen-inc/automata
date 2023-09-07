@@ -1,13 +1,10 @@
 package inc.kaizen.automata.module.ide
 
 import android.databinding.tool.ext.toCamelCase
-import com.android.tools.idea.npw.module.recipes.androidConfig
 import com.android.tools.idea.wizard.template.ModuleTemplateData
-import com.android.tools.idea.wizard.template.PackageName
 import com.android.tools.idea.wizard.template.RecipeExecutor
 import com.android.tools.idea.wizard.template.impl.activities.common.addAllKotlinDependencies
 import com.android.tools.idea.wizard.template.impl.activities.common.addMaterial3Dependency
-import com.google.services.firebase.insights.proto.Note
 import inc.kaizen.automata.module.extension.renderTemplate
 import java.util.*
 import kotlin.io.path.relativeTo
@@ -17,15 +14,10 @@ private const val COMPOSE_KOTLIN_COMPILER_VERSION = "1.3.2"
 
 fun RecipeExecutor.moduleRecipe(
     moduleData: ModuleTemplateData,
-    databaseFileName: String,
-    packageName: PackageName,
-    featureName: String,
-    isPaginationRequired: Boolean = false,
-    isBaseModule: Boolean = false
+    variables: Map<String, Variable> = mapOf()
 ) {
     addIncludeToSettings(moduleData.name)
 
-    // com.android.tools.idea.wizard.template.RecipeExecutor.save
     save("", moduleData.rootDir.resolve("build.gradle"))
     addAllKotlinDependencies(moduleData)
     addMaterial3Dependency()
@@ -38,8 +30,8 @@ fun RecipeExecutor.moduleRecipe(
         addDependency(mavenCoordinate = "androidx.activity:activity-compose:1.5.1")
 
         // Add Compose dependencies, using the BOM to set versions
-        addPlatformDependency(mavenCoordinate = "androidx.compose:compose-bom:${inc.kaizen.automata.project.COMPOSE_BOM_VERSION}")
-        addPlatformDependency(mavenCoordinate = "androidx.compose:compose-bom:${inc.kaizen.automata.project.COMPOSE_BOM_VERSION}", "androidTestImplementation")
+        addPlatformDependency(mavenCoordinate = "androidx.compose:compose-bom:${COMPOSE_BOM_VERSION}")
+        addPlatformDependency(mavenCoordinate = "androidx.compose:compose-bom:${COMPOSE_BOM_VERSION}", "androidTestImplementation")
 
         addDependency(mavenCoordinate = "androidx.compose.ui:ui")
         addDependency(mavenCoordinate = "androidx.compose.ui:ui-graphics")
@@ -52,10 +44,9 @@ fun RecipeExecutor.moduleRecipe(
         requireJavaVersion("1.8", true)
         setBuildFeature("compose", true)
         // Note: kotlinCompilerVersion default is declared in TaskManager.COMPOSE_KOTLIN_COMPILER_VERSION
-        setComposeOptions(kotlinCompilerExtensionVersion = inc.kaizen.automata.project.COMPOSE_KOTLIN_COMPILER_VERSION)
+        setComposeOptions(kotlinCompilerExtensionVersion = COMPOSE_KOTLIN_COMPILER_VERSION)
     }
 
-    val feature = featureName.toCamelCase()
 
     // viewmodel package
 //    var content = viewModel(packageName, featureName, isPaginationRequired)
@@ -109,11 +100,13 @@ fun RecipeExecutor.moduleRecipe(
 //    }
 
     val scopes = mutableMapOf<String, Any>()
-    scopes["packageName"] = packageName
-    scopes["featureName"] = featureName
-    scopes["feature"] = feature
-    scopes["isPaginationRequired"] = isPaginationRequired
-    scopes["databaseFileName"] = databaseFileName
+
+    variables.forEach { (_, variable) ->
+        scopes[variable.name] = variable.value
+    }
+
+    val feature = variables["featureName"]?.value?.toCamelCase()
+    val packageName = variables["packageName"]?.value?.toCamelCase()
 
     val templateRenderer = TemplateRenderer()
     val templatePath = templateRenderer.templatePath()

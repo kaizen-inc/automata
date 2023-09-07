@@ -1,18 +1,8 @@
 package inc.kaizen.automata.module.ide
 
-import com.android.tools.idea.wizard.template.Category
-import com.android.tools.idea.wizard.template.CheckBoxWidget
-import com.android.tools.idea.wizard.template.FormFactor
-import com.android.tools.idea.wizard.template.ModuleTemplateData
-import com.android.tools.idea.wizard.template.PackageNameWidget
-import com.android.tools.idea.wizard.template.TemplateConstraint
-import com.android.tools.idea.wizard.template.TemplateData
-import com.android.tools.idea.wizard.template.TextFieldWidget
-import com.android.tools.idea.wizard.template.WizardUiContext
-import com.android.tools.idea.wizard.template.booleanParameter
+import com.android.tools.idea.wizard.template.*
 import com.android.tools.idea.wizard.template.impl.defaultPackageNameParameter
-import com.android.tools.idea.wizard.template.stringParameter
-import com.android.tools.idea.wizard.template.template
+import inc.kaizen.automata.module.settings.ModuleTemplate
 import java.io.File
 
 val moduleTemplate
@@ -53,6 +43,8 @@ val moduleTemplate
             default = true
         }
 
+        val template: ModuleTemplate? = null
+
         val packageName = defaultPackageNameParameter
 
         widgets(
@@ -61,7 +53,7 @@ val moduleTemplate
             TextFieldWidget(clientGradleDependency),
             CheckBoxWidget(isBaseModule),
             CheckBoxWidget(isPaginationRequired),
-            PackageNameWidget(packageName)
+            PackageNameWidget(packageName),
         )
 
         // I am reusing the thumbnail provided by Android Studio, but
@@ -71,11 +63,6 @@ val moduleTemplate
         recipe = { data: TemplateData ->
             moduleRecipe(
                 moduleData = data as ModuleTemplateData,
-                databaseFileName = databaseFileName.value,
-                packageName = packageName.value,
-                featureName = featureName.value,
-                isPaginationRequired = isPaginationRequired.value,
-                isBaseModule = isBaseModule.value
             )
         }
     }

@@ -26,10 +26,16 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-
+        <applicationService
+                serviceImplementation="inc.kaizen.automata.module.settings.ModuleSettings"/>
+        <applicationConfigurable
+                parentId="tools"
+                instance="inc.kaizen.automata.module.settings.ModuleSettingsConfigurable"
+                id="org.intellij.sdk.settings.AppSettingsConfigurable"
+                displayName="Automata"/>
     </extensions>
     <extensions defaultExtensionNs="com.android.tools.idea.wizard.template">
-        <wizardTemplateProvider implementation="inc.kaizen.automata.project.MyProjectTemplatesProvider"/>
+        <wizardTemplateProvider implementation="inc.kaizen.automata.module.ide.ModuleWizardTemplateProvider"/>
     </extensions>
     
     <extensions defaultExtensionNs="com.android">

@@ -17,7 +17,7 @@ import com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.T
 import com.intellij.openapi.project.Project
 import com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplateRenderer as RenderLoggingEvent
 
-class CustomAndroidModuleModel(
+class AutomataModuleModel(
     name: String,
     commandName: String,
     isLibrary: Boolean,
@@ -28,13 +28,20 @@ class CustomAndroidModuleModel(
 ): ModuleModel(name, commandName, isLibrary, projectModelData, template, moduleParent, wizardContext) {
 
     init {
+        moduleName.set("module")
         packageName.set("basePackage")
     }
 
-    var isBaseModule: BoolValueProperty = BoolValueProperty(false)
-    var databaseFileName: StringValueProperty = StringValueProperty("database.db")
-    var clientDependency: StringValueProperty = StringValueProperty()
-    var isPaginationRequired: BoolValueProperty = BoolValueProperty(true)
+    val variables: MutableMap<String, Variable> = mutableMapOf()
+
+    fun variableByName(name: String): Variable {
+        var variable = variables[name]
+        if(variable == null) {
+            variable = Variable(name, "")
+            variables[name] = variable
+        }
+        return variable
+    }
 
     override val loggingEvent: AndroidStudioEvent.TemplateRenderer
         get() = formFactor.get().toModuleRenderingLoggingEvent()
@@ -46,11 +53,7 @@ class CustomAndroidModuleModel(
             get() = { data: TemplateData ->
                 moduleRecipe(
                     moduleData = data as ModuleTemplateData,
-                    databaseFileName = databaseFileName.get(),
-                    packageName = packageName.get(),
-                    featureName = moduleName.get(),
-                    isPaginationRequired = isPaginationRequired.get(),
-                    isBaseModule = isBaseModule.get()
+                    variables
                 )
             }
     }
@@ -71,7 +74,7 @@ class CustomAndroidModuleModel(
             moduleParent: String,
             projectSyncInvoker: ProjectSyncInvoker,
             isLibrary: Boolean = false
-        ) : CustomAndroidModuleModel = CustomAndroidModuleModel(
+        ) : AutomataModuleModel = AutomataModuleModel(
             name = "",
             commandName = "New Module",
             projectModelData = ExistingProjectModelData(project, projectSyncInvoker),
