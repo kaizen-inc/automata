@@ -3,7 +3,9 @@ package inc.kaizen.automata.module.settings
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.*
 import com.intellij.util.xmlb.XmlSerializerUtil
+import inc.kaizen.automata.module.extension.copyTo
 import inc.kaizen.automata.module.extension.toPath
+import java.nio.file.Path
 
 @State(
     name = "ModuleSettings",
@@ -13,17 +15,18 @@ import inc.kaizen.automata.module.extension.toPath
 )
 class ModuleSettings: PersistentStateComponent<ModuleSettings> {
 
-    private val templatePath: String = System.getProperty("user.home")
+    private val templatePath: Path = System.getProperty("user.home")
         .toPath()
         .resolve("templates")
         .resolve("ClientModule")
-        .normalize()
-        .toString()
 
-    private val defaultModuleTemplate: ModuleTemplate = ModuleTemplate("Client Module", templatePath)
+    private val defaultModuleTemplate: ModuleTemplate = ModuleTemplate("Client Module", templatePath.normalize().toString())
 
     var templates: MutableList<ModuleTemplate> = mutableListOf()
 
+    init {
+        "template.zip".copyTo(templatePath)
+    }
     companion object {
         fun getInstance(): ModuleSettings {
             return ApplicationManager.getApplication().getService(ModuleSettings::class.java)

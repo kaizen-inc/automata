@@ -1,8 +1,7 @@
-package inc.kaizen.automata.module.ide
+package inc.kaizen.automata.module.ide.steps
 
 import com.android.tools.idea.npw.module.ConfigureModuleStep
 import com.android.tools.idea.npw.toWizardFormFactor
-import com.android.tools.idea.observable.ui.TextProperty
 import com.intellij.openapi.observable.util.whenItemSelected
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.ui.Messages
@@ -17,6 +16,9 @@ import com.intellij.util.ui.FormBuilder
 import com.intellij.util.ui.JBUI.Borders.empty
 import com.intellij.util.ui.ListTableModel
 import inc.kaizen.automata.module.extension.toPath
+import inc.kaizen.automata.module.ide.model.AutomataModuleModel
+import inc.kaizen.automata.module.ide.dialog.CreateVariableDialog
+import inc.kaizen.automata.module.ide.model.Variable
 import inc.kaizen.automata.module.settings.ModuleSettings
 import inc.kaizen.automata.module.settings.ModuleTemplate
 import java.awt.Dimension
@@ -24,7 +26,6 @@ import javax.swing.ComboBoxModel
 import javax.swing.JComboBox
 import javax.swing.JPanel
 import javax.swing.ListSelectionModel
-import javax.swing.table.TableCellEditor
 
 class AutomataTemplateConfigureModuleStep(
     model: AutomataModuleModel,
@@ -94,7 +95,7 @@ class AutomataTemplateConfigureModuleStep(
             }
         }
 
-        toolbarDecorator.setRemoveAction { actionButton ->
+        toolbarDecorator.setRemoveAction {
             val selectedIndices: IntArray? = this.variableTable.selectionModel.selectedIndices
             if (selectedIndices != null) {
                 val result: Int = Messages.showYesNoDialog(
@@ -110,7 +111,7 @@ class AutomataTemplateConfigureModuleStep(
             }
         }
 
-        toolbarDecorator.setEditAction {  actionButton ->
+        toolbarDecorator.setEditAction {
             val selectedIndices: IntArray? = this.variableTable.selectionModel.selectedIndices
             if (selectedIndices?.size == 1) {
                 val template = tableModel.getItem(this.variableTable.selectionModel.selectedIndices[0])
@@ -140,7 +141,8 @@ class AutomataTemplateConfigureModuleStep(
     }
 
     private fun findVariablesFromTemplate(selectedItem: ModuleTemplate?): List<Variable> {
-        val regex = "\\{\\{([a-zA-Z]+)\\}\\}".toRegex()
+        val reserves = "completePackageName|className|feature"
+        val regex = "\\{\\{(\\b(?!$reserves\\b)\\w+)\\}\\}".toRegex()
 
         val variables = mutableSetOf<Variable>()
         selectedItem.let { template ->

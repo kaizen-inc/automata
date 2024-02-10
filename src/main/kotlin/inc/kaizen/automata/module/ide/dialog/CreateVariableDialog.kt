@@ -1,8 +1,9 @@
-package inc.kaizen.automata.module.ide
+package inc.kaizen.automata.module.ide.dialog
 
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.ui.ValidationInfo
 import com.intellij.ui.components.fields.ExtendableTextField
+import inc.kaizen.automata.module.ide.model.Variable
 import org.apache.commons.lang.StringUtils
 import java.awt.GridLayout
 import javax.swing.*

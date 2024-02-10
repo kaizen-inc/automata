@@ -19,7 +19,7 @@ class TemplateRenderer {
 //        } else {
 //            null
 //        }
-        return Paths.get("C:\\Git\\intellij\\automata\\src\\main\\resources\\template")
+        return Paths.get("C:\\Git\\intellij\\automata\\src\\main\\resources\\template\\ClientModule")
     }
 
     private fun readMustacheFolder(folder: Path): List<Path> {

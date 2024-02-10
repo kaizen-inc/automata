@@ -1,4 +1,4 @@
-package inc.kaizen.automata.module.ide
+package inc.kaizen.automata.module.ide.model
 
 data class Variable(
     var name: String = "",

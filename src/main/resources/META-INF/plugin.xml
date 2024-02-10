@@ -34,10 +34,7 @@
                 id="org.intellij.sdk.settings.AppSettingsConfigurable"
                 displayName="Automata"/>
     </extensions>
-    <extensions defaultExtensionNs="com.android.tools.idea.wizard.template">
-        <wizardTemplateProvider implementation="inc.kaizen.automata.module.ide.ModuleWizardTemplateProvider"/>
-    </extensions>
-    
+
     <extensions defaultExtensionNs="com.android">
         <moduleDescriptionProvider implementation="inc.kaizen.automata.module.ide.AutomataModuleDescriptionProvider"/>
     </extensions>

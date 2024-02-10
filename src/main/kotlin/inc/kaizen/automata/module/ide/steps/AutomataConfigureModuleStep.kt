@@ -1,4 +1,4 @@
-package inc.kaizen.automata.module.ide
+package inc.kaizen.automata.module.ide.steps
 
 import com.android.tools.adtui.device.FormFactor
 import com.android.tools.idea.npw.module.ConfigureModuleStep
@@ -7,6 +7,8 @@ import com.android.tools.idea.wizard.model.ModelWizardStep
 import com.intellij.ui.dsl.builder.AlignX
 import com.intellij.ui.dsl.builder.panel
 import com.intellij.util.ui.JBUI.Borders.empty
+import inc.kaizen.automata.module.ide.model.AutomataModuleModel
+import inc.kaizen.automata.module.ide.model.Variable
 import javax.swing.JPanel
 
 class AutomataConfigureModuleStep(

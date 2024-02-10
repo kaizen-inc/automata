@@ -6,6 +6,8 @@ import com.android.tools.idea.npw.module.ModuleGalleryEntry
 import com.android.tools.idea.wizard.model.SkippableWizardStep
 import com.intellij.openapi.project.Project
 import icons.StudioIcons
+import inc.kaizen.automata.module.ide.model.AutomataModuleModel
+import inc.kaizen.automata.module.ide.steps.AutomataConfigureModuleStep
 import javax.swing.Icon
 
 private class MobileModuleTemplateGalleryEntry(
@@ -18,7 +20,7 @@ private class MobileModuleTemplateGalleryEntry(
         moduleParent: String,
         projectSyncInvoker: ProjectSyncInvoker
     ): SkippableWizardStep<*> {
-        val model = AutomataModuleModel.fromExistingProject(project, moduleParent, projectSyncInvoker, true)
+        val model = AutomataModuleModel.fromExistingProject(project, moduleParent, projectSyncInvoker, false)
         return AutomataConfigureModuleStep(model, 21, model.packageName.get(), name)
     }
 }

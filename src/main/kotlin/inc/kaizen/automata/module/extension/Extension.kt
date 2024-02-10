@@ -3,13 +3,12 @@ package inc.kaizen.automata.module.extension
 import com.github.mustachejava.DefaultMustacheFactory
 import com.github.mustachejava.MustacheFactory
 import inc.kaizen.automata.module.ide.AutomataModuleDescriptionProvider
-import inc.kaizen.automata.module.ide.Variable
 import org.apache.commons.io.FileUtils
-import java.io.IOException
-import java.io.StringWriter
+import java.io.*
 import java.net.URISyntaxException
 import java.nio.file.*
 import java.util.*
+import java.util.zip.ZipFile
 
 
 fun String.toPath(): Path = Paths.get(this)
@@ -45,8 +44,8 @@ fun String.resource(): String? {
 @Throws(URISyntaxException::class, IOException::class)
 fun String.copyTo(target: Path) {
     val url = AutomataModuleDescriptionProvider::class.java
-        .getClassLoader()
-        .getResource(this)
+        .getResourceAsStream(this)
+//        .getResource(this)
 //    val fileSystem: FileSystem = FileSystems.newFileSystem(
 //        url?.toURI(),
 //        Collections.emptyMap<String, String>()
@@ -68,6 +67,34 @@ fun String.copyTo(target: Path) {
 //        }
 //    })
 
-    FileUtils.copyURLToFile(url, target.toFile())
+//    FileUtils.copyInputStreamToFile(url, target.toFile())
+//    FileUtils.copyURLToFile(url, target.toFile())
 
+//    ZipFile(target.resolve("templates.zip").toFile()).use { zip ->
+//        zip.entries().asSequence().forEach { entry ->
+//            zip.getInputStream(entry).use { input ->
+//                val filePath = target.resolve(entry.name).normalize().toString()
+//                if (!entry.isDirectory) {
+//                    // if the entry is a file, extracts it
+//                    extractFile(input, filePath)
+//                } else {
+//                    // if the entry is a directory, make the directory
+//                    val dir = File(filePath)
+//                    dir.mkdir()
+//                }
+//            }
+//        }
+//    }
+}
+
+private const val BUFFER_SIZE = 4096
+@Throws(IOException::class)
+private fun extractFile(inputStream: InputStream, destFilePath: String) {
+    val bos = BufferedOutputStream(FileOutputStream(destFilePath))
+    val bytesIn = ByteArray(BUFFER_SIZE)
+    var read: Int
+    while (inputStream.read(bytesIn).also { read = it } != -1) {
+        bos.write(bytesIn, 0, read)
+    }
+    bos.close()
 }
