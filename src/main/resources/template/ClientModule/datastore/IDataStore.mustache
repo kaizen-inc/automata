@@ -1,0 +1,19 @@
+package {{packageName}}.{{featureName}}.datastore
+
+{{! where would be the model classes? }}
+{{! import *.model.* }}
+
+interface I{{feature}}DataStore {
+
+    {{#generateAPI}}
+    suspend fun get{{feature}}s(page: Int = 1, perPage: Int = 10): List<{{feature}}>
+
+    suspend fun get{{feature}}ById(id: String): {{feature}}?
+
+    suspend fun delete{{feature}}ById(id: String): Unit
+
+    suspend fun post{{feature}}({{featureName}}: {{feature}}): {{feature}}?
+
+    suspend fun update{{feature}}({{featureName}}: {{feature}}): {{feature}}
+    {{/generateAPI}}
+}

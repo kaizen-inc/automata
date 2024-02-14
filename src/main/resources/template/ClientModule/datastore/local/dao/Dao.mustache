@@ -1,11 +1,13 @@
-package {{completePackageName}}
+package {{packageName}}.{{featureName}}.datastore.local.dao
 
+import androidx.paging.PagingSource
 import androidx.room.*
 import {{packageName}}.{{featureName}}.datastore.local.entity.{{feature}}Entity
 
 @Dao
 abstract class {{feature}}Dao/*: BaseDao<{{feature}}Entity, String>()*/ {
 
+    {{#generateAPI}}
     @Insert(onConflict = OnConflictStrategy.ABORT)
     abstract suspend fun insert(entity: {{feature}}Entity)
 
@@ -38,4 +40,8 @@ abstract class {{feature}}Dao/*: BaseDao<{{feature}}Entity, String>()*/ {
 
     @Query("delete from {{feature}}Entity")
     abstract suspend fun clear()
+
+    @Query("select * from {{feature}}Entity")
+    abstract fun pagingSource(): PagingSource<Int, {{feature}}Entity>
+    {{/generateAPI}}
 }

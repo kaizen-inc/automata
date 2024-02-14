@@ -1,4 +1,4 @@
-package {{completePackageName}}
+package {{packageName}}.{{featureName}}.datastore.local.database
 
 import android.content.Context
 import androidx.room.Database
@@ -10,7 +10,7 @@ import {{packageName}}.{{featureName}}.datastore.local.dao.{{feature}}Dao
 import {{packageName}}.{{featureName}}.datastore.local.entity.{{feature}}Entity
 
 @Database(entities = [{{feature}}Entity::class],
-    version = 5, exportSchema = false)
+    version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class {{feature}}Database: RoomDatabase() {
 
@@ -24,7 +24,7 @@ abstract class {{feature}}Database: RoomDatabase() {
             if (instance == null) {
                 instance = Room.databaseBuilder(applicationContext,
                     {{feature}}Database::class.java,
-                    "{{databaseFileName}}.db")
+                    "{{appName}}.db")
                     .fallbackToDestructiveMigration()
                     .build()
             }

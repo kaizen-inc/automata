@@ -1,5 +1,24 @@
-package {{completePackageName}}
+package {{packageName}}.{{featureName}}.datastore.local
+
+import androidx.paging.PagingSource
+{{! where would be the model classes? }}
+{{! import *.model.* }}
+import {{packageName}}.{{featureName}}.datastore.I{{feature}}DataStore
+import {{packageName}}.{{featureName}}.datastore.local.entity.{{feature}}Entity
 
 interface I{{feature}}Store {
 
+    {{#generateAPI}}
+    suspend fun save{{feature}}({{featureName}}: {{feature}}): Boolean
+
+    suspend fun save{{feature}}s({{featureName}}s: List<{{feature}}>): Boolean
+
+    suspend fun delete{{feature}}ById(id: String): Unit
+
+    suspend fun post{{feature}}({{featureName}}: {{feature}}): {{feature}}?
+
+    suspend fun clear()
+
+    fun pagingSource(): PagingSource<Int, {{feature}}Entity>
+    {{/generateAPI}}
 }
