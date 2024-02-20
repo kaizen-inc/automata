@@ -16,7 +16,7 @@ class CreateVariableDialog(private val availableVariables: List<Variable>) : Dia
     private lateinit var valueField: ExtendableTextField
 
     init {
-        title = "Add/edit new variable"
+        title = "Add/Edit New Variable"
         init()
     }
 

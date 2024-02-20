@@ -167,5 +167,6 @@ class AutomataTemplateConfigureModuleStep(
     override fun onEntering() {
         super.onEntering()
         tableModel.items = findVariablesFromTemplate(moduleTemplateSelector.selectedItem as ModuleTemplate?)
+        model.selectedTemplate = moduleTemplateSelector.selectedItem as ModuleTemplate
     }
 }

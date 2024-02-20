@@ -2,6 +2,7 @@ package inc.kaizen.automata.module
 
 import inc.kaizen.automata.module.extension.renderTemplate
 import inc.kaizen.automata.module.ide.TemplateRenderer
+import inc.kaizen.automata.module.settings.ModuleTemplate
 import java.util.*
 import kotlin.io.path.relativeTo
 
@@ -16,7 +17,7 @@ fun main() {
     scopes["isPaginationRequired"] = false
     scopes["databaseFileName"] = "testing"
 
-    val templateRenderer = TemplateRenderer()
+    val templateRenderer = TemplateRenderer(ModuleTemplate())
     val templatePath = templateRenderer.templatePath()
     val paths = templateRenderer.renderContentFromTemplate()
     if (templatePath != null) {

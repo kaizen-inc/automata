@@ -1,25 +1,18 @@
 package inc.kaizen.automata.module.ide
 
+import inc.kaizen.automata.module.settings.ModuleTemplate
 import java.nio.file.Path
 import java.nio.file.Paths
 
-class TemplateRenderer {
+class TemplateRenderer(private val template: ModuleTemplate) {
 
-    fun renderContentFromTemplate(
-//        save: (packageName: String, fileName: String, content: String) -> Unit
-    ): List<Path>? {
+    fun renderContentFromTemplate(): List<Path>? {
         val resource: Path? = templatePath()
         return resource?.let { readMustacheFolder(it) }
     }
 
     fun templatePath(): Path? {
-//        val resource: URL? = this::class.java.javaClass.classLoader.getResource("template")
-//        return if (resource != null) {
-//            Paths.get(resource.toURI())
-//        } else {
-//            null
-//        }
-        return Paths.get("C:\\Git\\intellij\\automata\\src\\main\\resources\\template\\ClientModule")
+        return Paths.get(template.templatePath)
     }
 
     private fun readMustacheFolder(folder: Path): List<Path> {

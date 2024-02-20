@@ -14,6 +14,7 @@ import com.google.wireless.android.sdk.stats.AndroidStudioEvent
 import com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext.NEW_MODULE
 import com.intellij.openapi.project.Project
 import inc.kaizen.automata.module.ide.moduleRecipe
+import inc.kaizen.automata.module.settings.ModuleTemplate
 import com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplateRenderer as RenderLoggingEvent
 
 class AutomataModuleModel(
@@ -31,6 +32,7 @@ class AutomataModuleModel(
         packageName.set("basePackage")
     }
 
+    lateinit var selectedTemplate: ModuleTemplate
     val variables: MutableMap<String, Variable> = mutableMapOf()
 
     fun variableByName(name: String): Variable {
@@ -52,6 +54,7 @@ class AutomataModuleModel(
             get() = { data: TemplateData ->
                 moduleRecipe(
                     moduleData = data as ModuleTemplateData,
+                    selectedTemplate,
                     variables
                 )
             }

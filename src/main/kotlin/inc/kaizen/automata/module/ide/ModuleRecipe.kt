@@ -7,6 +7,7 @@ import com.android.tools.idea.wizard.template.impl.activities.common.addAllKotli
 import com.android.tools.idea.wizard.template.impl.activities.common.addMaterial3Dependency
 import inc.kaizen.automata.module.extension.renderTemplate
 import inc.kaizen.automata.module.ide.model.Variable
+import inc.kaizen.automata.module.settings.ModuleTemplate
 import java.util.*
 import kotlin.io.path.relativeTo
 
@@ -16,6 +17,7 @@ private const val DAGGER_HILT_VERSION = "1.3.2"
 
 fun RecipeExecutor.moduleRecipe(
     moduleData: ModuleTemplateData,
+    template: ModuleTemplate,
     variables: Map<String, Variable> = mapOf()
 ) {
     addIncludeToSettings(moduleData.name)
@@ -80,7 +82,7 @@ fun RecipeExecutor.moduleRecipe(
     val feature = featureName?.toCamelCase()
     val packageName = variables["packageName"]?.value
 
-    val templateRenderer = TemplateRenderer()
+    val templateRenderer = TemplateRenderer(template)
     val templatePath = templateRenderer.templatePath()
     val paths = templateRenderer.renderContentFromTemplate()
     if (templatePath != null) {
