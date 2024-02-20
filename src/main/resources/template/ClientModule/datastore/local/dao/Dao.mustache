@@ -23,6 +23,12 @@ abstract class {{feature}}Dao/*: BaseDao<{{feature}}Entity, String>()*/ {
     @Delete
     abstract suspend fun delete(entity: {{feature}}Entity)
 
+    @Query("delete from {{feature}}Entity where id = :id")
+    abstract suspend fun deleteById(entity: {{feature}}Entity)
+
+    @Update
+    abstract suspend fun updateEntity(entity: {{feature}}Entity)
+
     @Query("select exists(select * from {{feature}}Entity where id = :id)")
     abstract suspend fun exists(id: String): Boolean
 

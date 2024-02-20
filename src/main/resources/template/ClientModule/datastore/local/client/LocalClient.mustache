@@ -1,4 +1,4 @@
-package {{completePackageName}}
+package {{packageName}}.{{featureName}}.datastore.local.client
 
 import {{packageName}}.{{featureName}}.datastore.local.I{{feature}}Store
 import {{packageName}}.{{featureName}}.datastore.local.dao.{{feature}}Dao
@@ -42,4 +42,35 @@ class {{className}} @Inject constructor(private val context: Application):
     override suspend fun clear() {
         {{featureName}}Dao.clear()
     }
+
+    override fun pagingSource(): PagingSource<Int, {{feature}}Entity> {
+        return {{featureName}}Dao.pagingSource()
+    }
+
+    {{#generateAPI}}
+    override suspend fun get{{feature}}s(page: Int, perPage: Int): List<{{feature}}> {
+        return database.withTransaction {
+            val entities = {{featureName}}Dao.getEntities((page - 1) * perPage, perPage)
+            val {{featureName}}s = arrayListOf<{{feature}}>()
+            for (entity in entities) {
+                {{featureName}}s.add(entity.{{featureName}})
+            }
+            photos
+        }
+    }
+
+    override suspend fun get{{feature}}ById(id: String): {{feature}}? {
+        return {{featureName}}Dao.getEntity(id)?.{{featureName}}
+    }
+
+    override suspend fun delete{{feature}}ById(id: String): Unit {
+        return {{featureName}}Dao.deleteById(id)
+    }
+
+    override suspend fun post{{feature}}({{featureName}}: {{feature}}): {{feature}}? {
+        val {{featureName}}Entity = {{feature}}Entity({{featureName}})
+        return {{featureName}}Dao.updateEntity({{featureName}}Entity)?.{{featureName}}
+    }
+
+    {{/generateAPI}}
 }

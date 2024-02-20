@@ -1,0 +1,143 @@
+package {{packageName}}.base.ui.screen
+
+import {{packageName}}.base.viewmodel.{{appName}}ViewModel
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
+import {{packageName}}.base.R
+import {{packageName}}.base.ui.navigation.BaseDestination
+import net.openid.appauth.AuthState
+
+@Composable
+fun SplashScreen(navController: NavController, viewModel: {{appName}}ViewModel, authState: AuthState) {
+
+
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.White), verticalArrangement = Arrangement.Top) {
+        Text(
+            text = stringResource(id = R.string.app_name),
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.ExtraBold,
+            color = Color.Black,
+            fontFamily = FontFamily.Cursive,
+            fontSize = 72.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+
+        Text(
+            text = "The internet’s source of freely-usable images.\n" +
+                    "Powered by creators everywhere.",
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Light,
+            color = Color.Gray,
+            fontFamily = FontFamily.Serif,
+            fontSize = 14.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+
+        Text(
+            text = "- An Unsplash app -",
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
+            color = Color.Black,
+            fontFamily = FontFamily.SansSerif,
+            fontSize = 14.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+
+
+//        Jetpack Compose Lottie Dynamic Text and Image
+//        https://stackoverflow.com/a/69308603/8728053
+//        val bitmap = remember {
+//            BitmapFactory.decodeResource(context.resources, R.drawable.my_image)
+//        }
+//        val dynamicProperties = rememberLottieDynamicProperties(
+//            rememberLottieDynamicProperty(LottieProperty.IMAGE, bitmap, "weaccept.jpg"),
+//        )
+//        LottieAnimation(
+//            composition,
+//            dynamicProperties = dynamicProperties
+//        )
+
+//        https://mattbas.gitlab.io/python-lottie/group__Lottie.html#lottie_ImageLayer
+        val composition by rememberLottieComposition(
+            LottieCompositionSpec.RawRes(R.raw.splash_02),
+            imageAssetsFolder = "images"
+        )
+        val progress by animateLottieCompositionAsState(composition)
+        LottieAnimation(composition, progress)
+
+//        val composition by rememberLottieComposition(
+//            LottieCompositionSpec.RawRes(R.raw.splash)
+//        )
+//        val progress by animateLottieCompositionAsState(composition)
+//
+////        val composition by rememberLottieComposition(LottieCompositionSpec.Asset("animations/animation.json"))
+//
+//        LottieAnimation(
+//            composition
+////            modifier = Modifier
+////                .size(200.dp)
+////                .background(Color.Black),
+//        )
+
+        if (progress == 1.0f) {
+//        val viewModel: {{appName}}ViewModel = ViewModelProvider.viewModel
+//        val meResource = viewModel.meResource
+//        when(meResource.status){
+//            Status.Init -> {
+////            LoadingPage(loading = "Logging in...")
+//            }
+//            Status.Error -> {
+//                ErrorPage(error = "Error occurred (${viewModel.meResource.message}) while logging in..")
+//                LaunchedEffect(progress == 1.0f)  {
+//                    navController.popBackStack()
+//                    navController.navigate(Destination.login)
+//                }
+//            }
+//            Status.Loading -> {
+//                LoadingPage(loading = "Logging in...")
+//            }
+//            Status.Success -> {
+//                LaunchedEffect(progress == 1.0f)  {
+//                    navController.popBackStack()
+//                    navController.navigate(Destination.login)
+//                }
+//            }
+//        }
+
+            LaunchedEffect(progress == 1.0f) {
+                navController.popBackStack()
+                val destination = if(authState.isAuthorized) {
+//                    viewModel.me() //TODO enable this later
+                    BaseDestination.photos
+                } else BaseDestination.login
+                navController.navigate(destination)
+            }
+        }
+
+//        Read more about the Unsplash License
+    }
+}

@@ -1,4 +1,4 @@
-package {{completePackageName}}
+package {{packageName}}.{{featureName}}.ui.component
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,7 +21,7 @@ fun NavGraphBuilder.{{featureName}}sScreen(
             //            valiViewModel.editorialPhotos()
             //        }
 
-            {{feature}}sScreen(viewModel, navController)
+            {{feature}}Screen(viewModel, navController)
         }
     }
 
@@ -43,3 +43,7 @@ fun NavGraphBuilder.{{featureName}}Screen(
             {{feature}}DetailsScreen(viewModel, navController)
         }
     }
+
+fun NavController.navigateTo{{feature}}({{featureName}}Id: String) {
+    navigate({{feature}}Destination.{{featureName}}({{featureName}}Id))
+}

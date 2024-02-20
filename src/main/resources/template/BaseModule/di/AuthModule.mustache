@@ -1,0 +1,114 @@
+package {{packageName}}.base.di
+
+import android.app.Application
+import android.content.Intent
+import android.content.SharedPreferences
+import android.net.Uri
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import net.openid.appauth.*
+import org.json.JSONException
+import java.util.concurrent.locks.ReentrantLock
+import javax.inject.Named
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+class AuthModule {
+
+    private val keyState = "state"
+
+    @Provides
+    @Singleton
+    fun provideAuthorizationServiceConfiguration(): AuthorizationServiceConfiguration {
+        return AuthorizationServiceConfiguration(
+            Uri.parse("{{authorizeUrl}}"),  // authorization endpoint
+            Uri.parse("{{tokenUrl}}"),
+            null,
+            Uri.parse("{{oauth2redirect}}")
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppAuthConfiguration(): AppAuthConfiguration {
+        return AppAuthConfiguration.Builder().build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthState(authorizationServiceConfiguration: AuthorizationServiceConfiguration,
+                         mPrefs: SharedPreferences,
+                         mPrefsLock: ReentrantLock,
+        ): AuthState {
+        mPrefsLock.lock()
+        return try {
+            val currentState: String = mPrefs.getString(keyState, null) ?: return AuthState(authorizationServiceConfiguration)
+            try {
+                AuthState.jsonDeserialize(currentState)
+            } catch (ex: JSONException) {
+                AuthState()
+            }
+        } finally {
+            mPrefsLock.unlock()
+        }
+    }
+
+    @Provides
+    @Singleton
+    @Named("ClearAuthState")
+    fun provideClearAuthState(authorizationServiceConfiguration: AuthorizationServiceConfiguration,
+                         authState: AuthState): AuthState {
+        val clearedState = AuthState(authorizationServiceConfiguration)
+        if (authState.lastRegistrationResponse != null) {
+            clearedState.update(authState.lastRegistrationResponse)
+        }
+        return clearedState
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthorizationService(context: Application, appAuthConfiguration: AppAuthConfiguration): AuthorizationService {
+        return AuthorizationService(context, appAuthConfiguration)
+    }
+    @Provides
+    @Singleton
+    fun provideAuthorizationRequest(serviceConfig: AuthorizationServiceConfiguration): AuthorizationRequest {
+        val authRequestBuilder =  AuthorizationRequest.Builder(
+            serviceConfig,  // the authorization service configuration
+            inc.kaizen.base.BuildConfig.ACCESS_KEY,  // the client ID, typically pre-registered and static
+            ResponseTypeValues.CODE,  // the response_type value: we want a code
+            Uri.parse("{{oauth2redirect}}")
+        ) // the redirect URI to which the auth response is sent
+
+        return authRequestBuilder
+            //TODO make scope configurable
+            .setScope("public read_user write_user read_photos write_photos write_likes write_followers read_collections write_collections")
+            .setLoginHint("Login to account")
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @Named("AuthorizationRequestIntent")
+    fun provideAuthorizationRequestIntent(authService: AuthorizationService, authRequest: AuthorizationRequest): Intent {
+        return authService.getAuthorizationRequestIntent(authRequest)
+    }
+
+    @Provides
+    @Singleton
+    @Named("EndSessionRequestIntent")
+    fun provideEndSessionRequestIntent(serviceConfig: AuthorizationServiceConfiguration,
+                                       authState: AuthState,
+                                       authService: AuthorizationService,
+                                       authRequest: AuthorizationRequest): Intent {
+        return authService.getEndSessionRequestIntent(
+            EndSessionRequest.Builder(serviceConfig)
+                .setIdTokenHint(authState.idToken)
+                .setPostLogoutRedirectUri(serviceConfig.endSessionEndpoint)
+                .build()
+        )
+    }
+}

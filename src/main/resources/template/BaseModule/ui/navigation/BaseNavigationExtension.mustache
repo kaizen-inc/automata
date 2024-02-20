@@ -1,0 +1,27 @@
+package {{packageName}}.base.ui.navigation
+
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.composable
+import {{packageName}}.base.ui.screen.SplashScreen
+import {{packageName}}.base.viewmodel.ValiViewModel
+import net.openid.appauth.AuthState
+
+fun NavGraphBuilder.splashScreen(
+    navController: NavHostController,
+    authState: AuthState,
+    stateUpdater: () -> Unit
+) {
+    composable(BaseDestination.splash) {
+        stateUpdater()
+
+        val viewModel = hiltViewModel<ValiViewModel>()
+
+        SplashScreen(
+            navController = navController,
+            valiViewModel = viewModel,
+            authState = authState
+        )
+    }
+}

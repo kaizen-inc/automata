@@ -1,0 +1,149 @@
+package {{packageName}}.base.viewmodel
+
+import android.content.Intent
+import android.content.SharedPreferences
+import android.util.Log
+import androidx.annotation.AnyThread
+import androidx.annotation.Nullable
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import net.openid.appauth.*
+import org.json.JSONException
+import java.util.concurrent.locks.ReentrantLock
+import javax.inject.Inject
+
+
+@HiltViewModel
+class {{appName}}ViewModel @Inject constructor(private val mPrefs: SharedPreferences,
+                                        private val mPrefsLock: ReentrantLock,
+                                        private val authService: AuthorizationService,
+                                        private val authState: AuthState): ViewModel() {
+
+    private val keyState = "state"
+    private val keyAccessToken = "accessToken"
+
+    private val splashing = MutableStateFlow(true)
+
+    fun isSplashing(): Boolean? {
+        return splashing.value
+    }
+
+    @AnyThread
+    fun readState(serviceConfig: AuthorizationServiceConfiguration): AuthState {
+        mPrefsLock.lock()
+        return try {
+            val currentState: String = mPrefs.getString(keyState, null) ?: return AuthState(serviceConfig)
+            try {
+                AuthState.jsonDeserialize(currentState)
+            } catch (ex: JSONException) {
+                AuthState()
+            }
+        } finally {
+            mPrefsLock.unlock()
+        }
+    }
+
+    @AnyThread
+    fun writeState(@Nullable state: AuthState?) {
+        mPrefsLock.lock()
+        try {
+            val editor: SharedPreferences.Editor = mPrefs.edit()
+            if (state == null) {
+                editor.remove(keyState)
+            } else {
+                editor.putString(keyState, state.jsonSerializeString())
+            }
+            check(editor.commit()) { "Failed to write state to shared prefs" }
+        } finally {
+            mPrefsLock.unlock()
+        }
+    }
+
+    @AnyThread
+    fun writeToken(state: AuthState) {
+        mPrefsLock.lock()
+        try {
+            val editor: SharedPreferences.Editor = mPrefs.edit()
+            if (state == null) {
+                editor.remove(keyAccessToken)
+            } else {
+                editor.putString(keyAccessToken, state.accessToken)
+            }
+            check(editor.commit()) { "Failed to write accessToken to shared prefs" }
+        } finally {
+            mPrefsLock.unlock()
+        }
+    }
+
+    private fun handleAuthorizationCode(
+        code: String,
+        response: AuthorizationResponse,
+        successNavigate: () -> Unit,
+        failureNavigate: () -> Unit
+    ) {
+        val additionalInfo = mutableMapOf<String, String>()
+        additionalInfo["client_secret"] = {{packageName}}.base.BuildConfig.SECRET_KEY
+        val request = TokenRequest.Builder(
+            response.request.configuration,
+            response.request.clientId)
+            .setGrantType(GrantTypeValues.AUTHORIZATION_CODE)
+            .setRedirectUri(response.request.redirectUri)
+            .setAuthorizationCode(code)
+            .setAdditionalParameters(additionalInfo)
+            .setNonce(response.request.nonce)
+            .build()
+//       response.createTokenExchangeRequest(additionalInfo)
+
+        authService.performTokenRequest(request) { tokenResponse, ex ->
+            authState.update(tokenResponse, ex)
+            if (authState.isAuthorized) {
+                successNavigate()
+            } else {
+                failureNavigate()
+            }
+        }
+    }
+
+    fun handleSuccessfulAuthentication(intent: Intent,
+                                       successNavigate: () -> Unit,
+                                       failureNavigate: () -> Unit) {
+        val response = AuthorizationResponse.fromIntent(intent)
+        val ex = AuthorizationException.fromIntent(intent)
+        if (ex != null) {
+            failureNavigate()
+        }
+
+        authState.update(response, ex)
+        response?.authorizationCode?.let { code ->
+            Log.i("Data", code)
+            handleAuthorizationCode(code, response, successNavigate, failureNavigate)
+        }
+
+//        me() // call this after successful login
+    }
+
+    fun signOut(navigate: () -> Unit) {
+        navigate()
+    }
+
+    fun login(userId: String, password: String): Boolean {
+        CoroutineScope(Dispatchers.IO).launch {
+//            val result = repository.me()
+//            CoroutineScope(Dispatchers.Main).launch {
+//                result.fold(
+//                    { data ->
+//                        meResource = Resource.success(data)
+//                    },
+//                    { failure ->
+//                        meResource = Resource.error(failure)
+//                    }
+//                )
+//            }
+        }
+        return true
+    }
+}

@@ -1,0 +1,36 @@
+package {{packageName}}.base.di
+
+import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import java.util.concurrent.locks.ReentrantLock
+import javax.inject.Named
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+class PreferenceModule {
+
+    @Provides
+    @Singleton
+    fun providePreference(context: Application, @Named("PreferenceStore") name: String): SharedPreferences {
+        return context.getSharedPreferences(name, Context.MODE_PRIVATE)
+    }
+
+    @Provides
+    @Singleton
+    fun provideReentrantLock(): ReentrantLock {
+        return ReentrantLock()
+    }
+
+    @Provides
+    @Singleton
+    @Named("PreferenceStore")
+    fun providePreferenceStore(context: Application): String {
+        return context.packageName + "." + "{{appName}}Store"
+    }
+}

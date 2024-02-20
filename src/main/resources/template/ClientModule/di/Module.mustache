@@ -1,4 +1,4 @@
-package {{completePackageName}}
+package {{packageName}}.{{featureName}}.di
 
 import android.app.Application
 import dagger.Module
@@ -12,8 +12,8 @@ import {{packageName}}.{{featureName}}.datastore.local.client.{{feature}}LocalCl
 import {{packageName}}.{{featureName}}.datastore.remote.client.{{feature}}RemoteClient
 import {{packageName}}.{{featureName}}.datastore.repository.I{{feature}}Repository
 import {{packageName}}.{{featureName}}.datastore.repository.impl.{{feature}}Repository
-//import {{packageName}}.{{featureName}}.viewmodel.{{feature}}PagingSource
-//import {{packageName}}.{{featureName}}.viewmodel.{{feature}}RemoteMediator
+import {{packageName}}.{{featureName}}.viewmodel.{{feature}}PagingSource
+import {{packageName}}.{{featureName}}.viewmodel.{{feature}}RemoteMediator
 import javax.inject.Named
 import javax.inject.Singleton
     
@@ -38,18 +38,18 @@ class {{feature}}Module {
         @Named("CanFetchData") canFetchData: Boolean,
     ): I{{feature}}Repository =  {{feature}}Repository(remoteDataStore, localDataStore, isNetworkAvailability, canFetchData)
     
-//    @Provides
-//    @Singleton
-//    fun provide{{feature}}RemoteMediator(
-//        remoteDataStore: I{{feature}}DataStore,
-//        localDataStore: I{{feature}}Store,
-//    ): {{feature}}RemoteMediator =  {{feature}}RemoteMediator(remoteDataStore, localDataStore)
-//
-//    @Provides
-//    @Singleton
-//    fun provide{{feature}}PagingSource(
-//        remoteDataStore: I{{feature}}DataStore,
-//        localDataStore: I{{feature}}Store,
-//    ): {{feature}}PagingSource =  {{feature}}PagingSource(remoteDataStore, localDataStore)
+    @Provides
+    @Singleton
+    fun provide{{feature}}RemoteMediator(
+        remoteDataStore: I{{feature}}DataStore,
+        localDataStore: I{{feature}}Store,
+    ): {{feature}}RemoteMediator =  {{feature}}RemoteMediator(remoteDataStore, localDataStore)
+
+    @Provides
+    @Singleton
+    fun provide{{feature}}PagingSource(
+        remoteDataStore: I{{feature}}DataStore,
+        localDataStore: I{{feature}}Store,
+    ): {{feature}}PagingSource =  {{feature}}PagingSource(remoteDataStore, localDataStore)
 
 }
