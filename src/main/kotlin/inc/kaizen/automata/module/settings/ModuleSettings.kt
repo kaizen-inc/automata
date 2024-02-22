@@ -17,15 +17,19 @@ class ModuleSettings: PersistentStateComponent<ModuleSettings> {
 
     private val templatePath: Path = System.getProperty("user.home")
         .toPath()
+        .resolve("automata")
         .resolve("templates")
-        .resolve("ClientModule")
-
-    private val defaultModuleTemplate: ModuleTemplate = ModuleTemplate("Client Module", templatePath.normalize().toString())
 
     var templates: MutableList<ModuleTemplate> = mutableListOf()
 
     init {
-        "template.zip".copyTo(templatePath)
+        //TODO copy the default templates to templatePath
+        templatePath.toFile().listFiles()?.forEach { folder ->
+            val moduleTemplate = ModuleTemplate(folder.name, folder.toPath().normalize().toString())
+            if(folder.isDirectory && !templates.contains(moduleTemplate)) {
+                templates.add(moduleTemplate)
+            }
+        }
     }
     companion object {
         fun getInstance(): ModuleSettings {
@@ -39,8 +43,5 @@ class ModuleSettings: PersistentStateComponent<ModuleSettings> {
 
     override fun loadState(state: ModuleSettings) {
         XmlSerializerUtil.copyBean(state, this)
-        if(!templates.contains(defaultModuleTemplate)) {
-            templates.add(defaultModuleTemplate)
-        }
     }
 }
