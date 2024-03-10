@@ -1,7 +1,5 @@
 plugins {
-    id("java")
     id("org.jetbrains.kotlin.jvm") version "1.8.21"
-    id("org.jetbrains.intellij") version "1.13.3"
 }
 
 group = "inc.kaizen"
@@ -11,42 +9,28 @@ repositories {
     mavenCentral()
 }
 
-// Configure Gradle IntelliJ Plugin
-// Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
-intellij {
-    type.set("AI") // Target IDE Platform
-    version.set("2023.2.1.21")
-    plugins.set(listOf(
-        "org.jetbrains.android"
-    ))
-}
-
-dependencies {
-    implementation("com.github.spullara.mustache.java:compiler:0.9.10")
-}
-
-tasks {
-    // Set the JVM compatibility versions
-    withType<JavaCompile> {
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
-    }
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "17"
+subprojects {
+    apply {
+        plugin("org.jetbrains.kotlin.jvm")
     }
 
-    patchPluginXml {
-        sinceBuild.set("222")
-        untilBuild.set("232.*")
+    group = "inc.kaizen"
+    version = "1.0-SNAPSHOT"
+
+    repositories {
+        mavenCentral()
     }
 
-    signPlugin {
-        certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
-        privateKey.set(System.getenv("PRIVATE_KEY"))
-        password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
+    dependencies {
+        implementation(kotlin("stdlib-jdk8"))
+        testImplementation("org.jetbrains.kotlin:kotlin-test")
     }
 
-    publishPlugin {
-        token.set(System.getenv("PUBLISH_TOKEN"))
+    tasks.test {
+        useJUnitPlatform()
+    }
+    kotlin {
+        jvmToolchain(17)
     }
 }
+
