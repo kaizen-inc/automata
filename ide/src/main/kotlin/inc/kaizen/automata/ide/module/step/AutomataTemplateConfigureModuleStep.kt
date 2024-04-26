@@ -1,4 +1,4 @@
-package inc.kaizen.automata.ide.step
+package inc.kaizen.automata.ide.module.step
 
 import com.android.tools.idea.npw.module.ConfigureModuleStep
 import com.android.tools.idea.npw.toWizardFormFactor
@@ -16,7 +16,7 @@ import com.intellij.util.ui.FormBuilder
 import com.intellij.util.ui.JBUI.Borders.empty
 import com.intellij.util.ui.ListTableModel
 import inc.kaizen.automata.ide.dialog.CreateVariableDialog
-import inc.kaizen.automata.ide.model.AutomataModuleModel
+import inc.kaizen.automata.ide.module.model.AutomataModuleModel
 import inc.kaizen.automata.ide.setting.ModuleSettings
 import inc.kaizen.automata.core.extension.toPath
 import inc.kaizen.automata.core.model.Variable

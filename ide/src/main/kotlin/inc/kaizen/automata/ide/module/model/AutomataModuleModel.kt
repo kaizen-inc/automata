@@ -1,4 +1,4 @@
-package inc.kaizen.automata.ide.model
+package inc.kaizen.automata.ide.module.model
 
 import com.android.tools.idea.gradle.npw.project.GradleAndroidModuleTemplate.createSampleTemplate
 import com.android.tools.idea.npw.model.ExistingProjectModelData

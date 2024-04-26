@@ -1,12 +1,12 @@
-package inc.kaizen.automata.ide.galleryEntry
+package inc.kaizen.automata.ide.module.galleryEntry
 
 import com.android.tools.idea.npw.model.ProjectSyncInvoker
 import com.android.tools.idea.npw.module.ModuleGalleryEntry
 import com.android.tools.idea.wizard.model.SkippableWizardStep
 import com.intellij.openapi.project.Project
 import icons.StudioIcons
-import inc.kaizen.automata.ide.model.AutomataModuleModel
-import inc.kaizen.automata.ide.step.AutomataConfigureModuleStep
+import inc.kaizen.automata.ide.module.model.AutomataModuleModel
+import inc.kaizen.automata.ide.module.step.AutomataConfigureModuleStep
 import javax.swing.Icon
 
 class MobileModuleTemplateGalleryEntry(
