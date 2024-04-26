@@ -6,7 +6,7 @@ import com.intellij.openapi.ui.TextBrowseFolderListener
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.openapi.ui.ValidationInfo
 import com.intellij.ui.components.fields.ExtendableTextField
-import inc.kaizen.automate.core.template.ModuleTemplate
+import inc.kaizen.automata.core.template.ModuleTemplate
 import org.apache.commons.lang.StringUtils
 import java.awt.GridLayout
 import java.io.File

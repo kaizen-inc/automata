@@ -1,7 +1,7 @@
 package inc.kaizen.automata.ide.setting
 
 import com.intellij.openapi.options.Configurable
-import inc.kaizen.automate.core.template.ModuleTemplate
+import inc.kaizen.automata.core.template.ModuleTemplate
 import javax.swing.JComponent
 
 class ModuleSettingsConfigurable: Configurable {

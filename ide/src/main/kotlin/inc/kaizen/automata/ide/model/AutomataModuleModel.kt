@@ -14,8 +14,8 @@ import com.google.wireless.android.sdk.stats.AndroidStudioEvent
 import com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext.NEW_MODULE
 import com.intellij.openapi.project.Project
 import inc.kaizen.automata.ide.extension.moduleRecipe
-import inc.kaizen.automate.core.model.Variable
-import inc.kaizen.automate.core.template.ModuleTemplate
+import inc.kaizen.automata.core.model.Variable
+import inc.kaizen.automata.core.template.ModuleTemplate
 import com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplateRenderer as RenderLoggingEvent
 
 class AutomataModuleModel(

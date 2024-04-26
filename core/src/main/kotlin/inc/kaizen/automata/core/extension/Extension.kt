@@ -1,10 +1,5 @@
-package inc.kaizen.automate.core.extension
+package inc.kaizen.automata.core.extension
 
-import com.github.mustachejava.DefaultMustacheFactory
-import com.github.mustachejava.MustacheFactory
-import java.io.IOException
-import java.io.StringWriter
-import java.net.URISyntaxException
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -12,14 +7,6 @@ fun String.toPath(): Path = Paths.get(this)
 
 //fun String.readResource(): String? =
 //    AutomataModuleDescriptionProvider::class.java.getResource(this)?.readText()
-
-fun Path.renderTemplate(scopes: Map<String, Any>): String {
-    return StringWriter().use {
-        val mf: MustacheFactory = DefaultMustacheFactory()
-        val mustache = mf.compile(toFile().bufferedReader(), toFile().name)
-        mustache.execute(it, scopes)
-    }.toString()
-}
 
 //@Throws(URISyntaxException::class, IOException::class)
 //fun String.resource(): String? {

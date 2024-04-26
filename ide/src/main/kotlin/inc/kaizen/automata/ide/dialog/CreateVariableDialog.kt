@@ -3,7 +3,7 @@ package inc.kaizen.automata.ide.dialog
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.ui.ValidationInfo
 import com.intellij.ui.components.fields.ExtendableTextField
-import inc.kaizen.automate.core.model.Variable
+import inc.kaizen.automata.core.model.Variable
 import org.apache.commons.lang.StringUtils
 import java.awt.GridLayout
 import javax.swing.*

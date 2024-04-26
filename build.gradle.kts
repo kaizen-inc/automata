@@ -1,4 +1,6 @@
 plugins {
+    id("java")
+//    id("com.github.johnrengelman.shadow") version "7.1.2"
     id("org.jetbrains.kotlin.jvm") version "1.8.21"
 }
 
@@ -34,3 +36,23 @@ subprojects {
     }
 }
 
+tasks.register<Jar>("uberJar") {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    subprojects.forEach { subproject ->
+        dependsOn(subproject.configurations.runtimeClasspath)
+    }
+
+    subprojects.forEach { subproject ->
+        from(subproject.sourceSets.main.get().output)
+        from({
+            subproject.configurations.runtimeClasspath.get().filter {
+                it.name.endsWith("jar")
+                        && !it.name.contains("jetbrains", true)
+                        && !it.name.contains("kotlin", true)
+            }.map {
+                zipTree(it)
+            }
+        })
+    }
+}

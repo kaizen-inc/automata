@@ -5,10 +5,10 @@ import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.RecipeExecutor
 import com.android.tools.idea.wizard.template.impl.activities.common.addAllKotlinDependencies
 import com.android.tools.idea.wizard.template.impl.activities.common.addMaterial3Dependency
-import inc.kaizen.automate.core.extension.renderTemplate
-import inc.kaizen.automate.core.model.Variable
-import inc.kaizen.automate.core.render.TemplateRenderer
-import inc.kaizen.automate.core.template.ModuleTemplate
+import com.intellij.util.io.isFile
+import inc.kaizen.automata.core.model.Variable
+import inc.kaizen.automata.core.render.TemplateRenderer
+import inc.kaizen.automata.core.template.ModuleTemplate
 import java.util.*
 import kotlin.io.path.relativeTo
 
@@ -101,11 +101,60 @@ fun RecipeExecutor.moduleRecipe(
             scopes["completePackageName"] = completePackageName
             scopes["className"] = className
             scopes["feature"] = "$feature"
-            val classContent = path.renderTemplate(scopes)
+            val classContent = templateRenderer.renderTemplate(path, scopes)
             save(classContent, moduleData.srcDir
                 .resolve(featureName!!)
                 .resolve(relativeFilePath)
                 .resolve("${feature + className}.kt"))
+        }
+    }
+}
+
+
+
+fun RecipeExecutor.moduleRecipe2(
+    moduleData: ModuleTemplateData,
+    template: ModuleTemplate,
+    variables: Map<String, Variable> = mapOf()
+) {
+    val scopes = mutableMapOf<String, Any>()
+
+    variables.forEach { (_, variable) ->
+        scopes[variable.name] = variable.value
+    }
+
+    val featureName = variables["featureName"]?.value
+    val feature = featureName?.toCamelCase()
+    val packageName = variables["packageName"]?.value
+
+    val templateRenderer = TemplateRenderer(template)
+    val templatePath = templateRenderer.templatePath()
+    val paths = templateRenderer.renderContentFromTemplate()
+    if (templatePath != null) {
+        paths?.forEach { path ->
+            val relativeFilePath = path
+                .parent
+                .relativeTo(templatePath)
+                .toString()
+                .replace(".mustache", "")
+            if (path.isFile()) {
+                val packageExtension = relativeFilePath
+                    .replace("\\", ".")
+                    .lowercase(Locale.getDefault())
+                val completePackageName = "$packageName.$featureName.$packageExtension"
+                val className = path.toFile().nameWithoutExtension
+                scopes["completePackageName"] = completePackageName
+                scopes["className"] = className
+                scopes["feature"] = "$feature"
+
+                val classContent = templateRenderer.renderTemplate(path, scopes)
+                save(classContent, moduleData.rootDir
+                    .resolve(featureName!!)
+                    .resolve(relativeFilePath)
+                    .resolve("${feature + className}.kt"))
+            } else {
+                createDirectory(moduleData.rootDir.resolve(relativeFilePath))
+            }
         }
     }
 }

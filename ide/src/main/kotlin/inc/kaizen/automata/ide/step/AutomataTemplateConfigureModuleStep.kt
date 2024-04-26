@@ -18,9 +18,9 @@ import com.intellij.util.ui.ListTableModel
 import inc.kaizen.automata.ide.dialog.CreateVariableDialog
 import inc.kaizen.automata.ide.model.AutomataModuleModel
 import inc.kaizen.automata.ide.setting.ModuleSettings
-import inc.kaizen.automate.core.extension.toPath
-import inc.kaizen.automate.core.model.Variable
-import inc.kaizen.automate.core.template.ModuleTemplate
+import inc.kaizen.automata.core.extension.toPath
+import inc.kaizen.automata.core.model.Variable
+import inc.kaizen.automata.core.template.ModuleTemplate
 import java.awt.Dimension
 import javax.swing.ComboBoxModel
 import javax.swing.JComboBox

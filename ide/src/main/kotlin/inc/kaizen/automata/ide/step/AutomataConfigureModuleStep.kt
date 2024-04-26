@@ -8,7 +8,7 @@ import com.intellij.ui.dsl.builder.AlignX
 import com.intellij.ui.dsl.builder.panel
 import com.intellij.util.ui.JBUI.Borders.empty
 import inc.kaizen.automata.ide.model.AutomataModuleModel
-import inc.kaizen.automate.core.model.Variable
+import inc.kaizen.automata.core.model.Variable
 import javax.swing.JPanel
 
 class AutomataConfigureModuleStep(

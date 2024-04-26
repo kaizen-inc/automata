@@ -1,4 +1,4 @@
-package inc.kaizen.automate.core.model
+package inc.kaizen.automata.core.model
 
 data class Variable(
     var name: String = "",

@@ -3,8 +3,8 @@ package inc.kaizen.automata.ide.setting
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.*
 import com.intellij.util.xmlb.XmlSerializerUtil
-import inc.kaizen.automate.core.extension.toPath
-import inc.kaizen.automate.core.template.ModuleTemplate
+import inc.kaizen.automata.core.extension.toPath
+import inc.kaizen.automata.core.template.ModuleTemplate
 import java.nio.file.Path
 
 @State(

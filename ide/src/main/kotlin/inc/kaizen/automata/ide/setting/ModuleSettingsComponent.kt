@@ -10,7 +10,7 @@ import com.intellij.util.ui.ColumnInfo
 import com.intellij.util.ui.FormBuilder
 import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.ListTableModel
-import inc.kaizen.automate.core.template.ModuleTemplate
+import inc.kaizen.automata.core.template.ModuleTemplate
 import java.awt.Dimension
 import javax.swing.JComponent
 import javax.swing.JPanel

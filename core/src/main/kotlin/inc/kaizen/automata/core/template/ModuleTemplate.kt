@@ -1,4 +1,4 @@
-package inc.kaizen.automate.core.template
+package inc.kaizen.automata.core.template
 
 data class ModuleTemplate(
     var name: String = "",

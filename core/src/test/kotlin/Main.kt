@@ -1,6 +1,5 @@
-import inc.kaizen.automate.core.extension.renderTemplate
-import inc.kaizen.automate.core.render.TemplateRenderer
-import inc.kaizen.automate.core.template.ModuleTemplate
+import inc.kaizen.automata.core.render.TemplateRenderer
+import inc.kaizen.automata.core.template.ModuleTemplate
 import java.util.*
 import kotlin.io.path.relativeTo
 
@@ -30,7 +29,7 @@ fun main() {
             val className = path.toFile().nameWithoutExtension
             scopes["completePackageName"] = completePackageName
             scopes["className"] = className
-            val classContent = path.renderTemplate(scopes)
+            val classContent = templateRenderer.renderTemplate(path, scopes)
             println(classContent)
 //            save(classContent, moduleData.srcDir.resolve(completePackageName).resolve("${file.nameWithoutExtension}.kt"))
         }
