@@ -7,7 +7,6 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.openapi.ui.ValidationInfo
 import com.intellij.ui.components.fields.ExtendableTextField
 import inc.kaizen.automata.core.template.ModuleTemplate
-import org.apache.commons.lang.StringUtils
 import java.awt.GridLayout
 import java.io.File
 import javax.swing.*
@@ -64,10 +63,10 @@ class CreateModuleTemplateDialog(private val availableTemplates: List<ModuleTemp
     override fun doValidate(): ValidationInfo? {
         val name: String = nameField.text
         val filePath: String = pathField.text
-        if(StringUtils.isBlank(name) && StringUtils.isBlank(filePath))
+        if(name.isBlank() && filePath.isBlank())
             return super.doValidate()
 
-        if (StringUtils.isBlank(name)) {
+        if (name.isBlank()) {
             return ValidationInfo("Provide a valid and unique name", nameField)
         }
         if (availableTemplates.any { it.name == name }) {

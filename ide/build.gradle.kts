@@ -37,11 +37,15 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("231")
+        sinceBuild.set("232")
         untilBuild.set("242.*")
     }
 
     publishPlugin {
-        token.set(System.getenv("PUBLISH_TOKEN"))
+        val publishToken = if(project.findProperty("PUBLISH_TOKEN") != null)
+            project.findProperty("PUBLISH_TOKEN") .toString()
+        else
+            System.getenv("PUBLISH_TOKEN")
+        token.set(publishToken)
     }
 }

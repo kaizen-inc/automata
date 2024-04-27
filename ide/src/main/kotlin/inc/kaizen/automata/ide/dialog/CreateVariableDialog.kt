@@ -53,17 +53,17 @@ class CreateVariableDialog(private val availableVariables: List<Variable>) : Dia
     override fun doValidate(): ValidationInfo? {
         val name: String = nameField.text
         val value: String = valueField.text
-        if(StringUtils.isBlank(name) && StringUtils.isBlank(value))
+        if(name.isBlank() && value.isBlank())
             return super.doValidate()
 
-        if (StringUtils.isBlank(name)) {
+        if (name.isBlank()) {
             return ValidationInfo("Provide a valid and unique name", nameField)
         }
         if (availableVariables.any { it.name == name }) {
             return ValidationInfo("$name is already configured", nameField)
         }
 
-        if (StringUtils.isBlank(value)) {
+        if (value.isBlank()) {
             return ValidationInfo("Provide a valid value", valueField)
         }
 
