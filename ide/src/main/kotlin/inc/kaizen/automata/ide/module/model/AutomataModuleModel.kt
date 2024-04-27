@@ -13,9 +13,9 @@ import com.android.tools.idea.wizard.template.TemplateData
 import com.google.wireless.android.sdk.stats.AndroidStudioEvent
 import com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext.NEW_MODULE
 import com.intellij.openapi.project.Project
-import inc.kaizen.automata.ide.extension.moduleRecipe
 import inc.kaizen.automata.core.model.Variable
 import inc.kaizen.automata.core.template.ModuleTemplate
+import inc.kaizen.automata.ide.extension.moduleRecipe2
 import com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplateRenderer as RenderLoggingEvent
 
 class AutomataModuleModel(
@@ -53,7 +53,7 @@ class AutomataModuleModel(
     inner class CustomModuleTemplateRenderer : ModuleModel.ModuleTemplateRenderer() {
         override val recipe: Recipe
             get() = { data: TemplateData ->
-                moduleRecipe(
+                moduleRecipe2(
                     moduleData = data as ModuleTemplateData,
                     selectedTemplate,
                     variables

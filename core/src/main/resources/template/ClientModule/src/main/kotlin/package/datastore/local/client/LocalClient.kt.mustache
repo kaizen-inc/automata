@@ -1,12 +1,13 @@
-package {{packageName}}.{{featureName}}.datastore.local.client
+package {{packageName}}.datastore.local.client
 
-import {{packageName}}.{{featureName}}.datastore.local.I{{feature}}Store
-import {{packageName}}.{{featureName}}.datastore.local.dao.{{feature}}Dao
-import {{packageName}}.{{featureName}}.datastore.local.database.{{feature}}Database
-import {{packageName}}.{{featureName}}.datastore.local.entity.{{feature}}Entity
+import android.app.Application
+import {{packageName}}.datastore.local.I{{feature}}Store
+import {{packageName}}.datastore.local.dao.{{feature}}Dao
+import {{packageName}}.datastore.local.database.{{feature}}Database
+import {{packageName}}.datastore.local.entity.{{feature}}Entity
 import javax.inject.Inject
 
-class {{className}} @Inject constructor(private val context: Application):
+class {{feature}}LocalClient @Inject constructor(private val context: Application):
     I{{feature}}Store {
 
     private var {{featureName}}Dao: {{feature}}Dao

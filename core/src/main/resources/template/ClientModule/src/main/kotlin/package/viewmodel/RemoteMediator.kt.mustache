@@ -1,12 +1,12 @@
-package {{packageName}}.{{featureName}}.viewmodel
+package {{packageName}}.viewmodel
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import {{packageName}}.{{featureName}}.datastore.I{{feature}}DataStore
-import {{packageName}}.{{featureName}}.datastore.local.I{{feature}}Store
-import {{packageName}}.{{featureName}}.datastore.local.entity.{{feature}}Entity
+import {{packageName}}.datastore.I{{feature}}DataStore
+import {{packageName}}.datastore.local.I{{feature}}Store
+import {{packageName}}.datastore.local.entity.{{feature}}Entity
 
 @OptIn(ExperimentalPagingApi::class)
 class {{feature}}RemoteMediator(

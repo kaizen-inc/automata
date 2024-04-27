@@ -170,4 +170,10 @@ class AutomataTemplateConfigureModuleStep(
         model.selectedTemplate = moduleTemplate
         tableModel.items = findVariablesFromTemplate(moduleTemplate)
     }
+
+    override fun onProceeding() {
+        val moduleTemplate = moduleTemplateSelector.selectedItem as ModuleTemplate
+        model.selectedTemplate = moduleTemplate
+        super.onProceeding()
+    }
 }

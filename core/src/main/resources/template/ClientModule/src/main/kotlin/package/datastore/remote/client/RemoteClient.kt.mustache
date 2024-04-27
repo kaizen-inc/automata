@@ -1,9 +1,9 @@
-package {{packageName}}.{{featureName}}.datastore.remote.client
+package {{packageName}}.datastore.remote.client
 
 {{! where would be the model classes? }}
 {{! import *.model.* }}
 {{! import *.client.* }}
-import {{packageName}}.{{featureName}}.datastore.I{{feature}}DataStore
+import {{packageName}}.datastore.I{{feature}}DataStore
 import javax.inject.Inject
 
 class {{feature}}RemoteClient @Inject constructor(private val client: {{appName}}Client):

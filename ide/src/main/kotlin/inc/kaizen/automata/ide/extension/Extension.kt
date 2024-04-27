@@ -105,7 +105,7 @@ fun RecipeExecutor.moduleRecipe(
             save(classContent, moduleData.srcDir
                 .resolve(featureName!!)
                 .resolve(relativeFilePath)
-                .resolve("${feature + className}.kt"))
+                .resolve(feature + className))
         }
     }
 }
@@ -123,9 +123,9 @@ fun RecipeExecutor.moduleRecipe2(
         scopes[variable.name] = variable.value
     }
 
-    val featureName = variables["featureName"]?.value
-    val feature = featureName?.toCamelCase()
-    val packageName = variables["packageName"]?.value
+    val featureName = variables["featureName"]?.value!!
+    val feature = featureName.toCamelCase()
+    val packageName = variables["packageName"]?.value!!
 
     val templateRenderer = TemplateRenderer(template)
     val templatePath = templateRenderer.templatePath()
@@ -136,25 +136,28 @@ fun RecipeExecutor.moduleRecipe2(
                 .parent
                 .relativeTo(templatePath)
                 .toString()
+                .replace("\\package\\", "\\$packageName\\")
                 .replace(".mustache", "")
             if (path.isFile()) {
                 val packageExtension = relativeFilePath
                     .replace("\\", ".")
                     .lowercase(Locale.getDefault())
                 val completePackageName = "$packageName.$featureName.$packageExtension"
-                val className = path.toFile().nameWithoutExtension
+                val fileName = path.toFile().nameWithoutExtension
                 scopes["completePackageName"] = completePackageName
-                scopes["className"] = className
-                scopes["feature"] = "$feature"
+                scopes["className"] = fileName
+                scopes["feature"] = feature
 
                 val classContent = templateRenderer.renderTemplate(path, scopes)
+                val isGradleFile = path.toFile().name.startsWith("build.gradle", false)
+                val fileFullName = if(isGradleFile) fileName else feature + fileName
                 save(classContent, moduleData.rootDir
-                    .resolve(featureName!!)
                     .resolve(relativeFilePath)
-                    .resolve("${feature + className}.kt"))
+                    .resolve(fileFullName))
             } else {
                 createDirectory(moduleData.rootDir.resolve(relativeFilePath))
             }
         }
     }
+    addIncludeToSettings(moduleData.name)
 }

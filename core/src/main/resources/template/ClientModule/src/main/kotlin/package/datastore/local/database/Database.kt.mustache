@@ -1,13 +1,13 @@
-package {{packageName}}.{{featureName}}.datastore.local.database
+package {{packageName}}.datastore.local.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import {{packageName}}.{{featureName}}.datastore.local.converter.Converters
-import {{packageName}}.{{featureName}}.datastore.local.dao.{{feature}}Dao
-import {{packageName}}.{{featureName}}.datastore.local.entity.{{feature}}Entity
+import {{packageName}}.datastore.local.converter.Converters
+import {{packageName}}.datastore.local.dao.{{feature}}Dao
+import {{packageName}}.datastore.local.entity.{{feature}}Entity
 
 @Database(entities = [{{feature}}Entity::class],
     version = 1, exportSchema = false)
