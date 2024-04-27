@@ -1,11 +1,11 @@
-package {{packageName}}.base.ui.util
+package {{packageName}}.ui.util
 
 import androidx.compose.runtime.Composable
-import {{packageName}}.base.ui.component.ErrorPage
-import {{packageName}}.base.ui.component.InitPage
-import {{packageName}}.base.ui.component.LoadingPage
-import {{packageName}}.base.ui.component.NoResultPage
-import {{packageName}}.base.util.Status
+import {{packageName}}.ui.component.ErrorPage
+import {{packageName}}.ui.component.InitPage
+import {{packageName}}.ui.component.LoadingPage
+import {{packageName}}.ui.component.NoResultPage
+import {{packageName}}.util.Status
 
 @Composable
 fun ResourceReactor(status: Status, type: String, success: @Composable () -> Unit) {

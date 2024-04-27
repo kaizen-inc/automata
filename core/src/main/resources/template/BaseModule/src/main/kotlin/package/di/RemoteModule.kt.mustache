@@ -1,16 +1,16 @@
-package {{packageName}}.base.di
+package {{packageName}}.di
 
-import inc.kaizen.client.vali.infrastructure.ValiClient
+//import client package from library/module
 import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import {{packageName}}.base.di.PreferenceModule
 import okhttp3.Interceptor
 import okhttp3.Request
 import java.util.concurrent.locks.ReentrantLock
 import javax.inject.Singleton
+import {{packageName}}.di.PreferenceModule
 
 @Module(includes = [PreferenceModule::class])
 @InstallIn(SingletonComponent::class)

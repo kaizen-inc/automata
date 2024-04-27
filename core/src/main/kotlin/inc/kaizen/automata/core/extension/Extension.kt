@@ -12,6 +12,11 @@ fun String.toPath(): Path = Paths.get(this)
 
 @OptIn(ExperimentalPathApi::class)
 fun Path.copyDefaultTemplates() = run {
+    val destinationDir = toFile()
+    if (destinationDir.exists() || destinationDir.listFiles()?.isNotEmpty() == true) {
+        return@run
+    }
+
     if (!toFile().exists()) {
         toFile().mkdirs()
     }
