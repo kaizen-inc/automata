@@ -1,21 +1,23 @@
 package inc.kaizen.automata.ide.module.model
 
-import com.android.tools.idea.gradle.npw.project.GradleAndroidModuleTemplate.createSampleTemplate
 import com.android.tools.idea.npw.model.ExistingProjectModelData
 import com.android.tools.idea.npw.model.ProjectModelData
 import com.android.tools.idea.npw.model.ProjectSyncInvoker
 import com.android.tools.idea.npw.module.ModuleModel
+import com.android.tools.idea.projectsystem.AndroidModulePathsImpl
 import com.android.tools.idea.projectsystem.NamedModuleTemplate
 import com.android.tools.idea.wizard.template.FormFactor
 import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.Recipe
 import com.android.tools.idea.wizard.template.TemplateData
+import com.google.common.collect.ImmutableList
 import com.google.wireless.android.sdk.stats.AndroidStudioEvent
 import com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext.NEW_MODULE
 import com.intellij.openapi.project.Project
 import inc.kaizen.automata.core.model.Variable
 import inc.kaizen.automata.core.template.ModuleTemplate
 import inc.kaizen.automata.ide.extension.moduleRecipe2
+import java.io.File
 import com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplateRenderer as RenderLoggingEvent
 
 class AutomataModuleModel(
@@ -69,8 +71,26 @@ class AutomataModuleModel(
         FormFactor.Generic -> RenderLoggingEvent.ANDROID_MODULE // TODO(b/145975555)
     }
 
-
     companion object {
+
+        private fun createTemplate(moduleRoot: File = File("")): NamedModuleTemplate {
+            val baseSrcDir = File(moduleRoot, "src")
+            val baseFlavorDir = File(baseSrcDir, "main")
+            return NamedModuleTemplate(
+                "main", AndroidModulePathsImpl(
+                    moduleRoot,
+                    baseFlavorDir,
+                    File(baseFlavorDir, "java"),
+                    File(baseSrcDir.path, "test" + File.separatorChar + "java"),
+                    File(baseSrcDir.path, "androidTest" + File.separatorChar + "java"),
+                    File(baseFlavorDir, "aidl"),
+                    ImmutableList.of(
+                        File(baseFlavorDir, "res")
+                    ),
+                    ImmutableList.of(File(baseFlavorDir, "ml"))
+                )
+            )
+        }
 
         fun fromExistingProject(
             project: Project,
@@ -81,7 +101,7 @@ class AutomataModuleModel(
             name = "",
             commandName = "New Module",
             projectModelData = ExistingProjectModelData(project, projectSyncInvoker),
-            template = createSampleTemplate(),
+            template = createTemplate(),
             moduleParent = moduleParent,
             isLibrary = isLibrary,
             wizardContext = NEW_MODULE

@@ -5,7 +5,6 @@ import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.RecipeExecutor
 import com.android.tools.idea.wizard.template.impl.activities.common.addAllKotlinDependencies
 import com.android.tools.idea.wizard.template.impl.activities.common.addMaterial3Dependency
-import com.intellij.util.io.isFile
 import inc.kaizen.automata.core.model.Variable
 import inc.kaizen.automata.core.render.TemplateRenderer
 import inc.kaizen.automata.core.template.ModuleTemplate
@@ -138,7 +137,7 @@ fun RecipeExecutor.moduleRecipe2(
                 .toString()
                 .replace("\\package\\", "\\$packageName\\")
                 .replace(".mustache", "")
-            if (path.isFile()) {
+            if (path.toFile().isFile) {
                 val packageExtension = relativeFilePath
                     .replace("\\", ".")
                     .lowercase(Locale.getDefault())

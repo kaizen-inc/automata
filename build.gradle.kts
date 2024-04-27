@@ -1,11 +1,10 @@
 plugins {
     id("java")
-//    id("com.github.johnrengelman.shadow") version "7.1.2"
     id("org.jetbrains.kotlin.jvm") version "1.8.21"
 }
 
 group = "inc.kaizen"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     mavenCentral()
@@ -17,7 +16,7 @@ subprojects {
     }
 
     group = "inc.kaizen"
-    version = "1.0-SNAPSHOT"
+    version = "1.0"
 
     repositories {
         mavenCentral()
