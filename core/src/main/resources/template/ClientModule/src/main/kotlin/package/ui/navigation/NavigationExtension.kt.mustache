@@ -1,0 +1,49 @@
+package {{packageName}}.ui.component
+
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.*
+import androidx.navigation.compose.composable
+import {{packageName}}.ui.screen.{{feature}}DetailsScreen
+import {{packageName}}.ui.screen.{{feature}}StatisticsScreen
+import {{packageName}}.ui.screen.{{feature}}Screen
+import {{packageName}}.viewmodel.{{feature}}ViewModel
+
+fun NavGraphBuilder.{{featureName}}sScreen(
+    //    onNavigateTo{{feature}}: ({{featureName}}Id: String) -> Unit
+    navController: NavHostController,
+    stateUpdater: () -> Unit) {
+        composable({{feature}}Destination.{{featureName}}s) {
+            stateUpdater()
+            val viewModel = hiltViewModel<{{feature}}ViewModel>()
+            //        LaunchedEffect(Unit) {
+            ////            valiViewModel.randomPhotos()
+            //            valiViewModel.editorialPhotos()
+            //        }
+
+            {{feature}}Screen(viewModel, navController)
+        }
+    }
+
+fun NavGraphBuilder.{{featureName}}Screen(
+    navController: NavHostController,
+    stateUpdater: () -> Unit) {
+        composable(
+            {{feature}}Destination.{{featureName}},
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) { backStackEntry ->
+            stateUpdater()
+            val viewModel = hiltViewModel<{{feature}}ViewModel>()
+
+            val {{featureName}}Id = backStackEntry.arguments?.getString("id")!!
+            LaunchedEffect({{featureName}}Id) { //TODO just a workaround for a bug that call composable multiple times, to be removed later
+                viewModel.get{{feature}}ById({{featureName}}Id)
+            }
+
+            {{feature}}DetailsScreen(viewModel, navController)
+        }
+    }
+
+fun NavController.navigateTo{{feature}}({{featureName}}Id: String) {
+    navigate({{feature}}Destination.{{featureName}}({{featureName}}Id))
+}

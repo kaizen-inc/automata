@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+        width="32"
+        height="32"
+        viewBox="0 0 32 32"
+        version="1.1"
+        id="svg1"
+        inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+        sodipodi:docname="automata.svg"
+        xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+        xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:svg="http://www.w3.org/2000/svg">
+    <sodipodi:namedview
+            id="namedview1"
+            pagecolor="#ffffff"
+            bordercolor="#000000"
+            borderopacity="0.25"
+            inkscape:showpageshadow="2"
+            inkscape:pageopacity="0.0"
+            inkscape:pagecheckerboard="0"
+            inkscape:deskcolor="#d1d1d1"
+            inkscape:document-units="px"
+            inkscape:zoom="17.964932"
+            inkscape:cx="7.2363203"
+            inkscape:cy="20.400857"
+            inkscape:window-width="1920"
+            inkscape:window-height="1009"
+            inkscape:window-x="-8"
+            inkscape:window-y="-8"
+            inkscape:window-maximized="1"
+            inkscape:current-layer="layer1" />
+    <defs
+            id="defs1" />
+    <g
+            inkscape:label="Layer 1"
+            inkscape:groupmode="layer"
+            id="layer1">
+        <rect
+                style="fill:#00ff00;fill-opacity:0.338308;stroke-width:1.1452;paint-order:markers stroke fill"
+                id="rect2"
+                width="18.146463"
+                height="17.812481"
+                x="0.11132801"
+                y="1.3650325e-09" />
+        <rect
+                style="fill:#00ffff;fill-opacity:0.338308;stroke-width:1.13284;paint-order:markers stroke fill"
+                id="rect2-4"
+                width="17.756815"
+                height="17.812481"
+                x="14.180656"
+                y="-0.053711958" />
+        <rect
+                style="fill:#ff0000;fill-opacity:0.338308;stroke-width:1.1452;paint-order:markers stroke fill"
+                id="rect2-3"
+                width="17.868147"
+                height="17.868147"
+                x="14.146463"
+                y="14.031234" />
+        <rect
+                style="fill:#ffff00;fill-opacity:0.338308;stroke-width:1.15231;paint-order:markers stroke fill"
+                id="rect2-3-9"
+                width="18.090803"
+                height="17.868147"
+                x="0.042000175"
+                y="14.053712" />
+    </g>
+</svg>
