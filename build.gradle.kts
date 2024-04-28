@@ -1,52 +1,57 @@
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.8.21"
-    id("org.jetbrains.intellij") version "1.13.3"
 }
 
 group = "inc.kaizen"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     mavenCentral()
 }
 
-// Configure Gradle IntelliJ Plugin
-// Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
-intellij {
-    type.set("AI") // Target IDE Platform
-    version.set("2023.2.1.21")
-    plugins.set(listOf(
-        "org.jetbrains.android"
-    ))
+subprojects {
+    apply {
+        plugin("org.jetbrains.kotlin.jvm")
+    }
+
+    group = "inc.kaizen"
+    version = "1.0"
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation(kotlin("stdlib-jdk8"))
+        testImplementation("org.jetbrains.kotlin:kotlin-test")
+    }
+
+    tasks.test {
+        useJUnitPlatform()
+    }
+    kotlin {
+        jvmToolchain(17)
+    }
 }
 
-dependencies {
-    implementation("com.github.spullara.mustache.java:compiler:0.9.10")
-}
+tasks.register<Jar>("uberJar") {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
-tasks {
-    // Set the JVM compatibility versions
-    withType<JavaCompile> {
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
-    }
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "17"
+    subprojects.forEach { subproject ->
+        dependsOn(subproject.configurations.runtimeClasspath)
     }
 
-    patchPluginXml {
-        sinceBuild.set("222")
-        untilBuild.set("232.*")
-    }
-
-    signPlugin {
-        certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
-        privateKey.set(System.getenv("PRIVATE_KEY"))
-        password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
-    }
-
-    publishPlugin {
-        token.set(System.getenv("PUBLISH_TOKEN"))
+    subprojects.forEach { subproject ->
+        from(subproject.sourceSets.main.get().output)
+        from({
+            subproject.configurations.runtimeClasspath.get().filter {
+                it.name.endsWith("jar")
+                        && !it.name.contains("jetbrains", true)
+                        && !it.name.contains("kotlin", true)
+            }.map {
+                zipTree(it)
+            }
+        })
     }
 }

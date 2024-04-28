@@ -1,0 +1,11 @@
+package {{packageName}}.ui.navigation
+
+object {{feature}}Destination {
+    const val {{featureName}}s = "{{featureName}}s"
+    const val {{featureName}} = "{{featureName}}s/{id}"
+    const val post{{featureName}} = "post{{featureName}}"
+    
+    fun {{featureName}}(id: String): String = "{{featureName}}s/$id"
+    fun update{{featureName}}(id: String): String = "{{featureName}}s/$id"
+    fun delete{{featureName}}(id: String): String = "{{featureName}}s/$id"
+}

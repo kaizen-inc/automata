@@ -1,0 +1,26 @@
+package {{packageName}}.di
+
+import android.app.Application
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+class NetworkModule {
+
+    @Provides
+    @Singleton
+    @Named("IsNetworkAvailability")
+    fun provideNetworkAvailability(context: Application): Boolean {
+        return true //TODO implement network availability
+    }
+
+    @Provides
+    @Singleton
+    @Named("CanFetchData")
+    fun provideCanFetchData(): Boolean =  true
+}

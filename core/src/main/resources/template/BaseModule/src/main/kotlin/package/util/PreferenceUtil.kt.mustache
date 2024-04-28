@@ -1,0 +1,74 @@
+package {{packageName}}.util
+
+import android.content.SharedPreferences
+import androidx.annotation.AnyThread
+import androidx.annotation.Nullable
+import net.openid.appauth.AuthState
+import net.openid.appauth.AuthorizationServiceConfiguration
+import org.json.JSONException
+import java.util.concurrent.locks.ReentrantLock
+import javax.inject.Inject
+
+class PreferenceUtil @Inject constructor(private val mPrefs: SharedPreferences,
+                                         private val mPrefsLock: ReentrantLock) {
+
+    private val keyState = "state"
+    private val keyAccessToken = "accessToken"
+
+    @AnyThread
+    fun readState(serviceConfig: AuthorizationServiceConfiguration): AuthState {
+        mPrefsLock.lock()
+        return try {
+            val currentState: String = mPrefs.getString(keyState, null) ?: return AuthState(serviceConfig)
+            try {
+                AuthState.jsonDeserialize(currentState)
+            } catch (ex: JSONException) {
+                AuthState()
+            }
+        } finally {
+            mPrefsLock.unlock()
+        }
+    }
+
+    @AnyThread
+    fun writeState(@Nullable state: AuthState?) {
+        mPrefsLock.lock()
+        try {
+            val editor: SharedPreferences.Editor = mPrefs.edit()
+            if (state == null) {
+                editor.remove(keyState)
+            } else {
+                editor.putString(keyState, state.jsonSerializeString())
+            }
+            check(editor.commit()) { "Failed to write state to shared prefs" }
+        } finally {
+            mPrefsLock.unlock()
+        }
+    }
+
+    @AnyThread
+    fun writeToken(state: AuthState) {
+        mPrefsLock.lock()
+        try {
+            val editor: SharedPreferences.Editor = mPrefs.edit()
+            if (state == null) {
+                editor.remove(keyAccessToken)
+            } else {
+                editor.putString(keyAccessToken, state.accessToken)
+            }
+            check(editor.commit()) { "Failed to write accessToken to shared prefs" }
+        } finally {
+            mPrefsLock.unlock()
+        }
+    }
+
+    @AnyThread
+    fun readToken(): String? {
+        mPrefsLock.lock()
+        return try {
+            mPrefs.getString(keyAccessToken, null)
+        } finally {
+            mPrefsLock.unlock()
+        }
+    }
+}
